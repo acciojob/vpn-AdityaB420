@@ -10,6 +10,9 @@ import com.driver.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(username);
             user.setPassword(password);
 
-            Country country = new Country(); //linking
+            Country country = new Country();
             if(countryName.equalsIgnoreCase("IND")){
                 country.setCountryName(CountryName.IND);
                 country.setCode(CountryName.IND.toCode());
@@ -70,8 +73,9 @@ public class UserServiceImpl implements UserService {
     public User subscribe(Integer userId, Integer serviceProviderId) {
         User user = userRepository3.findById(userId).get();
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
-
-        user.getServiceProviderList().add(serviceProvider);
+        List<ServiceProvider> list=new ArrayList<>();
+        list=user.getServiceProviderList();
+        list.add(serviceProvider);
         serviceProvider.getUsers().add(user);
 
         serviceProviderRepository3.save(serviceProvider);
